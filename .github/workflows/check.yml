@@ -1,0 +1,35 @@
+name: Revisar pagina cada hora
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm install
+
+      - run: npx playwright install --with-deps chromium
+
+      - run: node check.js
+        env:
+          TARGET_URL: ${{ secrets.TARGET_URL }}
+          PORTAL_USER: ${{ secrets.PORTAL_USER }}
+          PORTAL_PASSWORD: ${{ secrets.PORTAL_PASSWORD }}
+          UNAVAILABLE_KEYWORDS: ${{ secrets.UNAVAILABLE_KEYWORDS }}
+          USERNAME_SELECTOR: ${{ secrets.USERNAME_SELECTOR }}
+          PASSWORD_SELECTOR: ${{ secrets.PASSWORD_SELECTOR }}
+          SUBMIT_SELECTOR: ${{ secrets.SUBMIT_SELECTOR }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL }}
+          TIMEZONE: ${{ secrets.TIMEZONE }}
