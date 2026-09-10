@@ -9,16 +9,26 @@ manda un correo cortito diciendo "todavia no".
 
 1. `cp .env.example .env`
 2. Abre `.env` y llena tus datos (usuario, clave, correo).
-3. Para que el correo salga necesitas una "clave de aplicacion" de Gmail (no
-   tu clave normal de todos los dias, es una clave aparte solo para robots).
-   El remitente es Gmail, no Outlook. Para sacarla:
-   1. Entra a https://myaccount.google.com/security
-   2. Si no tienes activada "Verificacion en 2 pasos", activala primero
-      (Google exige esto para poder crear la clave de aplicacion).
-   3. Luego ve a https://myaccount.google.com/apppasswords
-   4. Ponle un nombre cualquiera (ej: "robot admision") y crea.
-   5. Te va a mostrar una clave de 16 letras. Copiala tal cual, sin
-      espacios: esa va en `GMAIL_APP_PASSWORD`. Solo se muestra una vez.
+3. El remitente es tu correo de Outlook/Hotmail (`EMAIL_SERVICE=outlook`).
+   Para que el correo salga necesitas una "clave de aplicacion" (no tu
+   clave normal de todos los dias, es una clave aparte solo para robots).
+   Para sacarla:
+   1. Entra a https://account.microsoft.com/security
+   2. Si no tienes activada la "Verificacion en dos pasos", activala
+      primero (Microsoft exige esto para poder crear la clave de
+      aplicacion).
+   3. Dentro de "Opciones de seguridad avanzadas" busca "Contrasenas de
+      aplicacion" y crea una nueva.
+   4. Te va a mostrar una clave. Copiala tal cual, sin espacios: esa va
+      en `EMAIL_APP_PASSWORD`. Solo se muestra una vez.
+
+   (Si mas adelante prefieres usar Gmail en vez de Outlook, solo cambias
+   `EMAIL_SERVICE=gmail` en el `.env` y usas la clave de aplicacion de
+   Google en vez de la de Microsoft — el codigo no cambia.)
+
+   Nota: esto es para un correo personal (@outlook.com / @hotmail.com). Si
+   tu correo es de una empresa o universidad (Office 365), a veces un
+   administrador tiene que activar "SMTP AUTH" en esa cuenta primero.
 4. `npm install`
 5. `npm run install-browser` (descarga el navegador que usa el robot, una
    sola vez)
@@ -34,8 +44,8 @@ navegador y hacer clic en botones por ti.
 
 1. En tu repositorio: **Settings → Secrets and variables → Actions**.
 2. Crea un secreto ("New repository secret") por cada dato de tu `.env`,
-   con el mismo nombre: `TARGET_URL`, `PORTAL_USER`, `GMAIL_USER`,
-   `GMAIL_APP_PASSWORD`, `NOTIFY_EMAIL` (y `PORTAL_PASSWORD` /
+   con el mismo nombre: `TARGET_URL`, `PORTAL_USER`, `EMAIL_SERVICE`,
+   `EMAIL_USER`, `EMAIL_APP_PASSWORD`, `NOTIFY_EMAIL` (y `PORTAL_PASSWORD` /
    `UNAVAILABLE_KEYWORDS` solo si los llegas a usar).
 3. Listo. En cuanto este codigo quede en la rama principal, GitHub lo va a
    ejecutar solo cada hora, sin tocar tu compu.

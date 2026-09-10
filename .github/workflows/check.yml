@@ -29,7 +29,8 @@ jobs:
           USERNAME_SELECTOR: ${{ secrets.USERNAME_SELECTOR }}
           PASSWORD_SELECTOR: ${{ secrets.PASSWORD_SELECTOR }}
           SUBMIT_SELECTOR: ${{ secrets.SUBMIT_SELECTOR }}
-          GMAIL_USER: ${{ secrets.GMAIL_USER }}
-          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          EMAIL_SERVICE: ${{ secrets.EMAIL_SERVICE }}
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_APP_PASSWORD: ${{ secrets.EMAIL_APP_PASSWORD }}
           NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL }}
           TIMEZONE: ${{ secrets.TIMEZONE }}

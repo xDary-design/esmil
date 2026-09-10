@@ -94,16 +94,16 @@ async function checkSite() {
 
 async function sendEmail({ subject, text, screenshot }) {
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: process.env.EMAIL_SERVICE || 'outlook',
     auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD,
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_APP_PASSWORD,
     },
   });
 
   await transporter.sendMail({
-    from: process.env.GMAIL_USER,
-    to: process.env.NOTIFY_EMAIL || process.env.GMAIL_USER,
+    from: process.env.EMAIL_USER,
+    to: process.env.NOTIFY_EMAIL || process.env.EMAIL_USER,
     subject,
     text,
     attachments: screenshot ? [{ filename: 'resultado.png', content: screenshot }] : [],
