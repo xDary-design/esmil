@@ -12,13 +12,18 @@ const UNAVAILABLE_KEYWORDS = (process.env.UNAVAILABLE_KEYWORDS || '')
   .map((word) => word.trim().toLowerCase())
   .filter(Boolean);
 
+const USES_PASSWORD = PORTAL_PASSWORD.length > 0;
+
 const USERNAME_SELECTOR =
   process.env.USERNAME_SELECTOR ||
-  'input[type="text"], input[type="email"], input[name*="user" i], input[id*="user" i]';
+  'input[type="text"], input[type="number"], input[type="tel"], input[type="email"], ' +
+    'input[name*="cedula" i], input[id*="cedula" i], input[placeholder*="cedula" i], input[placeholder*="cédula" i], ' +
+    'input[name*="user" i], input[id*="user" i]';
 const PASSWORD_SELECTOR = process.env.PASSWORD_SELECTOR || 'input[type="password"]';
 const SUBMIT_SELECTOR =
   process.env.SUBMIT_SELECTOR ||
-  'button[type="submit"], input[type="submit"], button:has-text("Ingresar"), button:has-text("Entrar"), button:has-text("Iniciar")';
+  'button[type="submit"], input[type="submit"], button:has-text("Ingresar"), button:has-text("Entrar"), ' +
+    'button:has-text("Iniciar"), button:has-text("Consultar"), button:has-text("Buscar")';
 
 if (!TARGET_URL) {
   console.error('Falta TARGET_URL en el archivo .env');
@@ -44,15 +49,20 @@ async function checkSite() {
       return { available: false, reason: 'La pagina sigue mostrando el aviso de que no esta disponible.' };
     }
 
-    const passwordField = page.locator(PASSWORD_SELECTOR).first();
-    const hasLoginForm = (await passwordField.count()) > 0;
-    if (!hasLoginForm) {
-      return { available: false, reason: 'Todavia no aparece el formulario para ingresar usuario y clave.' };
+    const mainField = page.locator(USERNAME_SELECTOR).first();
+    const hasForm = (await mainField.count()) > 0;
+    if (!hasForm) {
+      return { available: false, reason: 'Todavia no aparece el campo para escribir la cedula.' };
     }
 
     try {
-      await page.locator(USERNAME_SELECTOR).first().fill(PORTAL_USER);
-      await passwordField.fill(PORTAL_PASSWORD);
+      await mainField.fill(PORTAL_USER);
+      if (USES_PASSWORD) {
+        const passwordField = page.locator(PASSWORD_SELECTOR).first();
+        if ((await passwordField.count()) > 0) {
+          await passwordField.fill(PORTAL_PASSWORD);
+        }
+      }
       await page.locator(SUBMIT_SELECTOR).first().click();
       await page.waitForTimeout(4000);
     } catch (loginError) {
