@@ -10,8 +10,15 @@ manda un correo cortito diciendo "todavia no".
 1. `cp .env.example .env`
 2. Abre `.env` y llena tus datos (usuario, clave, correo).
 3. Para que el correo salga necesitas una "clave de aplicacion" de Gmail (no
-   tu clave normal de todos los dias). Se crea en
-   https://myaccount.google.com/apppasswords
+   tu clave normal de todos los dias, es una clave aparte solo para robots).
+   El remitente es Gmail, no Outlook. Para sacarla:
+   1. Entra a https://myaccount.google.com/security
+   2. Si no tienes activada "Verificacion en 2 pasos", activala primero
+      (Google exige esto para poder crear la clave de aplicacion).
+   3. Luego ve a https://myaccount.google.com/apppasswords
+   4. Ponle un nombre cualquiera (ej: "robot admision") y crea.
+   5. Te va a mostrar una clave de 16 letras. Copiala tal cual, sin
+      espacios: esa va en `GMAIL_APP_PASSWORD`. Solo se muestra una vez.
 4. `npm install`
 5. `npm run install-browser` (descarga el navegador que usa el robot, una
    sola vez)
@@ -27,9 +34,9 @@ navegador y hacer clic en botones por ti.
 
 1. En tu repositorio: **Settings → Secrets and variables → Actions**.
 2. Crea un secreto ("New repository secret") por cada dato de tu `.env`,
-   con el mismo nombre: `TARGET_URL`, `PORTAL_USER`, `PORTAL_PASSWORD`,
-   `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `NOTIFY_EMAIL` (y `UNAVAILABLE_KEYWORDS`
-   si lo usas).
+   con el mismo nombre: `TARGET_URL`, `PORTAL_USER`, `GMAIL_USER`,
+   `GMAIL_APP_PASSWORD`, `NOTIFY_EMAIL` (y `PORTAL_PASSWORD` /
+   `UNAVAILABLE_KEYWORDS` solo si los llegas a usar).
 3. Listo. En cuanto este codigo quede en la rama principal, GitHub lo va a
    ejecutar solo cada hora, sin tocar tu compu.
 
